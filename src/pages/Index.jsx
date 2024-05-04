@@ -5,18 +5,24 @@ import { FaPlusCircle, FaUserMd } from "react-icons/fa";
 const Index = () => {
   const [patients, setPatients] = useState([]);
   const [patientName, setPatientName] = useState("");
-  const [details, setDetails] = useState("");
+  const [summary, setSummary] = useState("");
+  const [exam, setExam] = useState("");
+  const [todos, setTodos] = useState("");
 
   const handleAddPatient = () => {
-    if (patientName && details) {
+    if (patientName && summary && exam && todos) {
       const newPatient = {
         id: patients.length + 1,
         name: patientName,
-        details: details,
+        summary: summary,
+        exam: exam,
+        todos: todos,
       };
       setPatients([...patients, newPatient]);
       setPatientName("");
-      setDetails("");
+      setSummary("");
+      setExam("");
+      setTodos("");
     }
   };
 
@@ -30,8 +36,12 @@ const Index = () => {
             <Input placeholder="Enter patient's name" value={patientName} onChange={(e) => setPatientName(e.target.value)} />
           </FormControl>
           <FormControl mt={4}>
-            <FormLabel>Details</FormLabel>
-            <Textarea placeholder="Enter details about the patient" value={details} onChange={(e) => setDetails(e.target.value)} />
+            <FormLabel>Patient Summary</FormLabel>
+            <Textarea placeholder="Enter patient summary" value={summary} onChange={(e) => setSummary(e.target.value)} />
+            <FormLabel mt={4}>Exam/Studies</FormLabel>
+            <Textarea placeholder="Enter exam/studies details" value={exam} onChange={(e) => setExam(e.target.value)} />
+            <FormLabel mt={4}>To Dos</FormLabel>
+            <Textarea placeholder="Enter to dos" value={todos} onChange={(e) => setTodos(e.target.value)} />
           </FormControl>
           <Button leftIcon={<FaPlusCircle />} colorScheme="blue" mt={4} onClick={handleAddPatient}>
             Add Patient
@@ -41,7 +51,12 @@ const Index = () => {
           {patients.map((patient) => (
             <ListItem key={patient.id}>
               <ListIcon as={FaUserMd} color="green.500" />
-              <strong>{patient.name}</strong> - {patient.details}
+              <tr>
+                <td>{patient.name}</td>
+                <td>{patient.summary}</td>
+                <td>{patient.exam}</td>
+                <td>{patient.todos}</td>
+              </tr>
             </ListItem>
           ))}
         </List>
