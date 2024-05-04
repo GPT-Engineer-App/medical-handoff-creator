@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, VStack, Heading, Input, Button, List, ListItem, ListIcon, FormControl, FormLabel, Textarea, Box } from "@chakra-ui/react";
-import { FaPlusCircle, FaUserMd } from "react-icons/fa";
+import { FaPlusCircle, FaUserMd, FaFilePdf } from "react-icons/fa";
 
 const Index = () => {
   const [patients, setPatients] = useState([]);
@@ -26,6 +26,19 @@ const Index = () => {
     }
   };
 
+  const handleExportPatients = () => {
+    let dataString = "Patient Name, Summary, Exam/Studies, To Dos\n";
+    patients.forEach((patient) => {
+      dataString += `${patient.name}, ${patient.summary}, ${patient.exam}, ${patient.todos}\n`;
+    });
+    const element = document.createElement("a");
+    const file = new Blob([dataString], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = "PatientsData.txt";
+    document.body.appendChild(element);
+    element.click();
+  };
+
   return (
     <Container maxW="container.md" py={8}>
       <VStack spacing={8}>
@@ -45,6 +58,9 @@ const Index = () => {
           </FormControl>
           <Button leftIcon={<FaPlusCircle />} colorScheme="blue" mt={4} onClick={handleAddPatient}>
             Add Patient
+          </Button>
+          <Button leftIcon={<FaFilePdf />} colorScheme="red" mt={4} onClick={handleExportPatients}>
+            Export as PDF
           </Button>
         </Box>
         <List spacing={3} w="100%" borderWidth="1px" borderRadius="lg" p={4}>
